@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholar Dashboard - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="scholar-layout">
+    <nav class="top-navbar">
+        <a href="scholar-dashboard.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span class="brand-title">SSMAS | Scholar Portal</span>
+        </a>
+        <div class="nav-links">
+            <a href="scholar-dashboard.html" class="nav-link active">My Dashboard</a>
+            <a href="submit-grades.html" class="nav-link">Submit Grades</a>
+            <div id="system-mode-indicator"></div>
+            <div id="user-profile-badge"></div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Scholar Academic Dashboard</h1>
+                <p class="page-subtitle">Monitor assigned program rules, track semester grade submissions, and view renewal compliance.</p>
+            </div>
+            <div>
+                <a href="submit-grades.html" class="btn btn-primary">+ Submit Semester Academic Summary</a>
+            </div>
+        </div>
+
+        <!-- Assigned Scholarship Program Card -->
+        <div id="assigned-program-card" class="card">
+            <div class="card-body text-center py-4">
+                <span class="text-muted">Loading assigned scholarship policy...</span>
+            </div>
+        </div>
+
+        <!-- My Submissions Table Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>My Semester Grade Submissions</h3>
+                <span class="text-sm text-muted">Academic Year 2026–2027</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Academic Period</th>
+                                <th>GWA</th>
+                                <th>Units</th>
+                                <th>Deficiencies</th>
+                                <th>Submission Timestamp</th>
+                                <th>Verification Status</th>
+                                <th>Compliance Status</th>
+                                <th>Renewal Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissions-table-body">
+                            <tr>
+                                <td colspan="9" class="text-center py-4">Loading your submissions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script src="js/scholar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.ScholarPortal.init();
+        });
+    </script>
+</body>
+</html>

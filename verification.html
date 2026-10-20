@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Verification Queue - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Staff Sidebar -->
+        <aside class="staff-sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">🏛️</span>
+                <div>
+                    <strong style="font-size: 0.95rem; display: block;">Scholarship Office</strong>
+                    <span style="font-size: 0.7rem; color: #94a3b8;">Staff Control Portal</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Core Modules</span>
+                <a href="staff-dashboard.html" class="sidebar-link">📊 Staff Dashboard</a>
+                <a href="scholars.html" class="sidebar-link">👥 Scholar Management</a>
+                <a href="verification.html" class="sidebar-link active">📑 Verification Queue</a>
+                <a href="compliance.html" class="sidebar-link">⚖️ Compliance Engine</a>
+                <a href="renewal.html" class="sidebar-link">✍️ Renewal Decisions</a>
+
+                <span class="sidebar-section-title" style="margin-top: 1rem;">System & Policies</span>
+                <a href="policies.html" class="sidebar-link">📋 Policy Thresholds</a>
+                <a href="audit-history.html" class="sidebar-link">📜 Audit History Log</a>
+                <a href="tests/runner.html" class="sidebar-link">🧪 Test Suite (TC01–TC10)</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-outline btn-sm" style="width: 100%; color: #cbd5e1; border-color: rgba(255,255,255,0.2);" onclick="window.Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Grade Evidence Verification Queue</h1>
+                    <p class="page-subtitle">Examine student-submitted grade-document references against official registrar standards. Substantiate or return for corrections.</p>
+                </div>
+                <div class="header-actions">
+                    <div id="user-profile-badge"></div>
+                </div>
+            </div>
+
+            <!-- Queue Filter -->
+            <div class="filter-bar">
+                <label for="verification-filter" style="font-weight: 600; font-size: 0.85rem;">Filter Verification Queue:</label>
+                <select id="verification-filter" class="form-control" style="width: auto;">
+                    <option value="all">All Submissions</option>
+                    <option value="Pending" selected>Pending Verification (Priority)</option>
+                    <option value="Verified">Verified Submissions</option>
+                    <option value="Returned">Returned for Correction</option>
+                </select>
+            </div>
+
+            <!-- Verification Queue Table Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Submissions Awaiting Documentary Review</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Scholar Details</th>
+                                    <th>Program</th>
+                                    <th>Academic Period</th>
+                                    <th>GWA (Units)</th>
+                                    <th>Subjects (F|I|D)</th>
+                                    <th>Evidence Reference</th>
+                                    <th>Submission Timestamp</th>
+                                    <th>Status</th>
+                                    <th>Verification Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="verification-table-body">
+                                <tr>
+                                    <td colspan="9" class="text-center py-4">Loading verification queue...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Return for Correction Modal -->
+    <div id="return-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Return Submission for Correction</h3>
+                <button id="modal-close-btn" class="btn btn-outline btn-xs">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Returning submission for scholar: <strong id="modal-scholar-name">Scholar Name</strong></p>
+                <div class="alert alert-warning mt-2 mb-3">
+                    <strong>Notice:</strong> Returning evidence requires an explicit, documented explanation. The scholar will be notified and permitted to resubmit corrected data.
+                </div>
+                <form id="modal-return-form">
+                    <input type="hidden" id="modal-sub-id">
+                    <div class="form-group">
+                        <label for="modal-return-reason">Specific Reason for Returning Evidence <span style="color:red;">*</span></label>
+                        <textarea id="modal-return-reason" class="form-control" rows="4" placeholder="Detail the discrepancy, illegible document reference, missing signature, or correction instructions..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="modal-cancel-btn" class="btn btn-outline">Cancel</button>
+                        <button type="submit" class="btn btn-warning">Return for Correction</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script src="js/scholar.js"></script>
+    <script src="js/verification.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.Verification.init();
+        });
+    </script>
+</body>
+</html>

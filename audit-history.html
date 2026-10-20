@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit History Log - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Staff Sidebar -->
+        <aside class="staff-sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">🏛️</span>
+                <div>
+                    <strong style="font-size: 0.95rem; display: block;">Scholarship Office</strong>
+                    <span style="font-size: 0.7rem; color: #94a3b8;">Staff Control Portal</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Core Modules</span>
+                <a href="staff-dashboard.html" class="sidebar-link">📊 Staff Dashboard</a>
+                <a href="scholars.html" class="sidebar-link">👥 Scholar Management</a>
+                <a href="verification.html" class="sidebar-link">📑 Verification Queue</a>
+                <a href="compliance.html" class="sidebar-link">⚖️ Compliance Engine</a>
+                <a href="renewal.html" class="sidebar-link">✍️ Renewal Decisions</a>
+
+                <span class="sidebar-section-title" style="margin-top: 1rem;">System & Policies</span>
+                <a href="policies.html" class="sidebar-link">📋 Policy Thresholds</a>
+                <a href="audit-history.html" class="sidebar-link active">📜 Audit History Log</a>
+                <a href="tests/runner.html" class="sidebar-link">🧪 Test Suite (TC01–TC10)</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-outline btn-sm" style="width: 100%; color: #cbd5e1; border-color: rgba(255,255,255,0.2);" onclick="window.Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">System-Wide Audit Trail & Activity Log</h1>
+                    <p class="page-subtitle">Immutable chronological log of administrative verifications, compliance evaluations, renewal decisions, and resubmissions.</p>
+                </div>
+                <div class="header-actions">
+                    <div id="user-profile-badge"></div>
+                </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="filter-bar">
+                <div class="search-input-wrap">
+                    <input type="text" id="audit-search" class="form-control" placeholder="Search by Action Type, Table, or Actor ID...">
+                </div>
+                <div>
+                    <select id="audit-type-filter" class="form-control">
+                        <option value="all">All Action Types</option>
+                        <option value="VERIFICATION">Verifications</option>
+                        <option value="COMPLIANCE">Compliance Evaluations</option>
+                        <option value="RENEWAL">Renewal Decisions</option>
+                        <option value="RESUBMIT">Scholar Resubmissions</option>
+                        <option value="SYSTEM_SEED">System Seeding</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Audit Log Entries</h3>
+                    <span class="text-sm text-muted">Secured via Row-Level Security</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp (PHT)</th>
+                                    <th>Action Type</th>
+                                    <th>Actor</th>
+                                    <th>Affected Table</th>
+                                    <th>Target Record ID</th>
+                                    <th>Event Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-table-body">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">Loading audit logs...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await window.AccessControl.guard(['staff']);
+            if (!user) return;
+
+            let auditEntries = [];
+            let profilesMap = new Map();
+
+            async function loadAuditLogs() {
+                const tbody = document.getElementById('audit-table-body');
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading audit trail...</td></tr>`;
+
+                const { data: profiles } = await window.dataClient.from('profiles').select('*');
+                (profiles || []).forEach(p => profilesMap.set(p.id, p));
+
+                const { data: logs, error } = await window.dataClient
+                    .from('audit_logs')
+                    .select('*')
+                    .order('timestamp', { ascending: false });
+
+                if (error || !logs || logs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 empty-state">No audit logs recorded yet.</td></tr>`;
+                    return;
+                }
+
+                auditEntries = logs;
+                renderTable();
+            }
+
+            function renderTable() {
+                const tbody = document.getElementById('audit-table-body');
+                const search = (document.getElementById('audit-search').value || '').toLowerCase().trim();
+                const typeFilter = document.getElementById('audit-type-filter').value;
+
+                let filtered = auditEntries.filter(log => {
+                    const action = (log.action_type || '').toLowerCase();
+                    const table = (log.record_table || '').toLowerCase();
+                    const actorId = (log.actor_id || '').toLowerCase();
+                    const actor = profilesMap.get(log.actor_id);
+                    const actorName = (actor ? actor.full_name : '').toLowerCase();
+
+                    if (search && !action.includes(search) && !table.includes(search) && !actorId.includes(search) && !actorName.includes(search)) {
+                        return false;
+                    }
+
+                    if (typeFilter !== 'all' && !log.action_type.includes(typeFilter)) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 empty-state">No audit entries match filter.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(log => {
+                    const actor = profilesMap.get(log.actor_id);
+                    const actorDisplay = actor ? `<strong>${actor.full_name}</strong> (${actor.role})` : `<code class="text-xs">${log.actor_id || 'System'}</code>`;
+                    let detailsStr = "";
+                    try {
+                        detailsStr = typeof log.details === 'object' ? JSON.stringify(log.details) : log.details;
+                    } catch (e) {
+                        detailsStr = "Details";
+                    }
+
+                    return `
+                        <tr>
+                            <td><span class="text-xs">${window.formatManilaDate(log.timestamp)}</span></td>
+                            <td><span class="badge badge-info">${log.action_type}</span></td>
+                            <td>${actorDisplay}</td>
+                            <td><code>${log.record_table}</code></td>
+                            <td><code class="text-xs">${log.record_id ? log.record_id.substring(0, 18) + '...' : 'N/A'}</code></td>
+                            <td><pre style="font-size: 0.72rem; background: #f8fafc; padding: 0.35rem 0.5rem; border-radius: 4px; max-width: 320px; overflow-x: auto;">${detailsStr}</pre></td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('audit-search').addEventListener('input', renderTable);
+            document.getElementById('audit-type-filter').addEventListener('change', renderTable);
+
+            await loadAuditLogs();
+        });
+    </script>
+</body>
+</html>

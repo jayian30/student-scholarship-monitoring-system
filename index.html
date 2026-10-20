@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="scholar-layout">
+    <nav class="top-navbar">
+        <a href="index.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span class="brand-title">SSMAS | Scholarship & Compliance</span>
+        </a>
+        <div class="nav-links">
+            <a href="login.html" class="nav-link">Sign In</a>
+            <a href="tests/runner.html" class="nav-link">Test Runner (TC01-TC10)</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="card" style="padding: 2.5rem; text-align: center; background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%); color: #ffffff; border: none; margin-top: 1rem;">
+            <span class="badge badge-info" style="margin-bottom: 1rem; align-self: center;">ITPC111 – Systems Analysis and Design Midterm Laboratory Examination</span>
+            <h1 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 0.75rem;">Student Scholarship Monitoring and Academic Compliance System</h1>
+            <p style="font-size: 1.1rem; max-width: 800px; margin: 0 auto 1.75rem auto; color: #e0f2fe;">
+                A centralized, role-based platform administering academic summary submissions, document verification, policy compliance evaluations, and scholarship renewal decisions for Merit and Community Scholars.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <a href="login.html" class="btn btn-warning" style="font-size: 1rem; padding: 0.75rem 1.75rem;">Access System Portal</a>
+                <a href="tests/runner.html" class="btn btn-outline" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.4); font-size: 1rem; padding: 0.75rem 1.75rem;">Run Functional Tests (TC01–TC10)</a>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+            <!-- Merit Scholar Program Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Merit Scholar Program</h3>
+                    <span class="program-badge">Merit</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-sm text-muted mb-3">Designed for top-tier academic achievers maintaining strict excellence standards without subject failures or dropped courses.</p>
+                    <ul style="list-style: none; font-size: 0.85rem; line-height: 1.8;">
+                        <li><strong>Max Permitted GWA:</strong> 1.75 (Lower is better)</li>
+                        <li><strong>Min Enrolled Units:</strong> 18 units</li>
+                        <li><strong>Max Failed Subjects:</strong> 0</li>
+                        <li><strong>Max Incomplete Grades:</strong> 0</li>
+                        <li><strong>Max Dropped Subjects:</strong> 0</li>
+                        <li><strong>Deadline:</strong> Oct 30, 2026, 5:00 PM Manila Time</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Community Scholar Program Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Community Scholar Program</h3>
+                    <span class="program-badge">Community</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-sm text-muted mb-3">Designed for scholars engaged in civic and community service with flexible unit load and one permitted dropped subject.</p>
+                    <ul style="list-style: none; font-size: 0.85rem; line-height: 1.8;">
+                        <li><strong>Max Permitted GWA:</strong> 2.25 (Lower is better)</li>
+                        <li><strong>Min Enrolled Units:</strong> 15 units</li>
+                        <li><strong>Max Failed Subjects:</strong> 0</li>
+                        <li><strong>Max Incomplete Grades:</strong> 0</li>
+                        <li><strong>Max Dropped Subjects:</strong> 1</li>
+                        <li><strong>Deadline:</strong> Oct 30, 2026, 5:00 PM Manila Time</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Access Cards -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>User Roles & Workflow Architecture</h3>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Scholar Role</h4>
+                        <p class="text-sm text-muted">Scholars can log in securely, view their assigned scholarship program, submit semester academic summaries with official grade document references, monitor verification status, and resubmit returned applications with corrected data.</p>
+                        <a href="login.html" class="btn btn-outline btn-sm mt-3">Scholar Access</a>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Scholarship Staff Role</h4>
+                        <p class="text-sm text-muted">Staff members oversee the verification queue, substantiate grade evidence, trigger the automated compliance evaluation engine, record explicit renewal decisions (Approved or Held), and review system audit history.</p>
+                        <a href="login.html" class="btn btn-primary btn-sm mt-3">Staff Dashboard Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
+        Student Scholarship Monitoring and Academic Compliance System &bull; ITPC111 Systems Analysis and Design &bull; Academic Year 2026–2027
+    </footer>
+</body>
+</html>

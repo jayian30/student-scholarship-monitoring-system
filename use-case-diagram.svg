@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 960" width="100%" height="100%">
+  <defs>
+    <!-- Arrow marker for <<include>> and <<extend>> -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#2563eb" />
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1150" height="960" fill="#ffffff" />
+
+  <!-- SYSTEM BOUNDARY RECTANGLE -->
+  <rect x="230" y="40" width="680" height="880" fill="#ffffff" stroke="#334155" stroke-width="2" rx="4" />
+  <text x="570" y="75" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#0f172a" text-anchor="middle">
+    Student Scholarship Monitoring and Academic Compliance System
+  </text>
+
+  <!-- ==================== LEFT ACTOR: SCHOLAR ==================== -->
+  <g id="actor-scholar" transform="translate(100, 360)">
+    <!-- Head -->
+    <circle cx="0" cy="-45" r="16" fill="#ffffff" stroke="#1e3a8a" stroke-width="2.5" />
+    <!-- Body -->
+    <line x1="0" y1="-29" x2="0" y2="15" stroke="#1e3a8a" stroke-width="2.5" />
+    <!-- Arms -->
+    <line x1="-28" y1="-12" x2="28" y2="-12" stroke="#1e3a8a" stroke-width="2.5" />
+    <!-- Left Leg -->
+    <line x1="0" y1="15" x2="-22" y2="55" stroke="#1e3a8a" stroke-width="2.5" />
+    <!-- Right Leg -->
+    <line x1="0" y1="15" x2="22" y2="55" stroke="#1e3a8a" stroke-width="2.5" />
+    <!-- Label -->
+    <text x="0" y="80" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e3a8a" text-anchor="middle">Scholar</text>
+  </g>
+
+  <!-- ==================== RIGHT ACTOR: SCHOLARSHIP STAFF ==================== -->
+  <g id="actor-staff" transform="translate(1040, 480)">
+    <!-- Head -->
+    <circle cx="0" cy="-45" r="16" fill="#ffffff" stroke="#991b1b" stroke-width="2.5" />
+    <!-- Body -->
+    <line x1="0" y1="-29" x2="0" y2="15" stroke="#991b1b" stroke-width="2.5" />
+    <!-- Arms -->
+    <line x1="-28" y1="-12" x2="28" y2="-12" stroke="#991b1b" stroke-width="2.5" />
+    <!-- Left Leg -->
+    <line x1="0" y1="15" x2="-22" y2="55" stroke="#991b1b" stroke-width="2.5" />
+    <!-- Right Leg -->
+    <line x1="0" y1="15" x2="22" y2="55" stroke="#991b1b" stroke-width="2.5" />
+    <!-- Label -->
+    <text x="0" y="80" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#991b1b" text-anchor="middle">Scholarship Staff</text>
+  </g>
+
+  <!-- ==================== USE CASES (OVALS) ==================== -->
+  
+  <!-- UC1: Log In & Authenticate -->
+  <g id="uc1">
+    <ellipse cx="570" cy="125" rx="130" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="570" y="130" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Log In &amp; Authenticate</text>
+  </g>
+
+  <!-- UC2: View Assigned Program Rules -->
+  <g id="uc2">
+    <ellipse cx="430" cy="205" rx="140" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="430" y="210" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">View Assigned Program Rules</text>
+  </g>
+
+  <!-- UC3: Submit Semester Grades -->
+  <g id="uc3">
+    <ellipse cx="410" cy="295" rx="145" ry="28" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="410" y="300" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Submit Semester Grades</text>
+  </g>
+
+  <!-- UC10: Validate Inputs & Deadlines (Included by UC3) -->
+  <g id="uc10">
+    <ellipse cx="740" cy="295" rx="130" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="740" y="299" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">Validate Inputs &amp; Deadlines</text>
+  </g>
+
+  <!-- UC4: Resubmit Returned Summary (Extends UC3) -->
+  <g id="uc4">
+    <ellipse cx="410" cy="395" rx="145" ry="28" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="410" y="400" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Resubmit Returned Summary</text>
+  </g>
+
+  <!-- UC5: Verify Grade Evidence -->
+  <g id="uc5">
+    <ellipse cx="570" cy="485" rx="140" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="570" y="490" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Verify Grade Evidence</text>
+  </g>
+
+  <!-- UC6: Return Evidence for Correction -->
+  <g id="uc6">
+    <ellipse cx="570" cy="565" rx="145" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="570" y="570" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Return Evidence for Correction</text>
+  </g>
+
+  <!-- UC7: Evaluate Academic Compliance -->
+  <g id="uc7">
+    <ellipse cx="570" cy="645" rx="145" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="570" y="650" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Evaluate Academic Compliance</text>
+  </g>
+
+  <!-- UC8: Record Renewal Decision -->
+  <g id="uc8">
+    <ellipse cx="440" cy="735" rx="145" ry="28" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="440" y="740" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Record Renewal Decision</text>
+  </g>
+
+  <!-- UC11: Check Compliance Preconditions (Included by UC8) -->
+  <g id="uc11">
+    <ellipse cx="750" cy="735" rx="130" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="750" y="739" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#1e293b" text-anchor="middle">Check Compliance Prerequisite</text>
+  </g>
+
+  <!-- UC9: Inspect Audit History -->
+  <g id="uc9">
+    <ellipse cx="570" cy="835" rx="135" ry="26" fill="#fef3c7" stroke="#b45309" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="570" y="840" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Inspect Audit History</text>
+  </g>
+
+  <!-- ==================== SOLID ASSOCIATION LINES ==================== -->
+
+  <!-- Scholar Associations -->
+  <!-- Scholar to UC1 -->
+  <line x1="125" y1="350" x2="445" y2="135" stroke="#475569" stroke-width="1.6" />
+  <!-- Scholar to UC2 -->
+  <line x1="128" y1="360" x2="295" y2="215" stroke="#475569" stroke-width="1.6" />
+  <!-- Scholar to UC3 -->
+  <line x1="130" y1="375" x2="268" y2="295" stroke="#475569" stroke-width="1.6" />
+  <!-- Scholar to UC4 -->
+  <line x1="130" y1="390" x2="270" y2="395" stroke="#475569" stroke-width="1.6" />
+
+  <!-- Staff Associations -->
+  <!-- Staff to UC1 -->
+  <line x1="1010" y1="460" x2="695" y2="135" stroke="#475569" stroke-width="1.6" />
+  <!-- Staff to UC5 -->
+  <line x1="1010" y1="480" x2="710" y2="485" stroke="#475569" stroke-width="1.6" />
+  <!-- Staff to UC6 -->
+  <line x1="1010" y1="495" x2="712" y2="560" stroke="#475569" stroke-width="1.6" />
+  <!-- Staff to UC7 -->
+  <line x1="1010" y1="510" x2="710" y2="640" stroke="#475569" stroke-width="1.6" />
+  <!-- Staff to UC8 -->
+  <line x1="1010" y1="530" x2="580" y2="728" stroke="#475569" stroke-width="1.6" />
+  <!-- Staff to UC9 -->
+  <line x1="1010" y1="550" x2="700" y2="830" stroke="#475569" stroke-width="1.6" />
+
+  <!-- ==================== DASHED RELATIONSHIP LINES (<<include>> and <<extend>>) ==================== -->
+
+  <!-- UC3 to UC10: <<include>> (Arrow points from UC3 to UC10) -->
+  <line x1="555" y1="295" x2="603" y2="295" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)" />
+  <rect x="545" y="278" width="70" height="18" fill="#ffffff" rx="2" />
+  <text x="580" y="291" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+
+  <!-- UC4 to UC3: <<extend>> (Arrow points from extending UC4 to base UC3) -->
+  <line x1="410" y1="367" x2="410" y2="330" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)" />
+  <rect x="375" y="342" width="70" height="18" fill="#ffffff" rx="2" />
+  <text x="410" y="355" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle">&lt;&lt;extend&gt;&gt;</text>
+
+  <!-- UC8 to UC11: <<include>> (Arrow points from base UC8 to included UC11) -->
+  <line x1="585" y1="735" x2="613" y2="735" stroke="#2563eb" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#arrow)" />
+  <rect x="565" y="718" width="70" height="18" fill="#ffffff" rx="2" />
+  <text x="600" y="731" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+
+</svg>

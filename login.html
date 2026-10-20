@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        .login-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        .login-header {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 1.75rem 2rem;
+            text-align: center;
+        }
+        .login-body {
+            padding: 2rem;
+        }
+        .test-accounts-section {
+            background: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+        .quick-user-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.8rem;
+            transition: all 0.15s;
+        }
+        .quick-user-btn:hover {
+            border-color: var(--primary-light);
+            background: #f0f7ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-box">
+            <div class="login-header">
+                <span style="font-size: 2rem;">🎓</span>
+                <h2 style="font-size: 1.3rem; margin-top: 0.5rem;">Scholarship Office Portal</h2>
+                <p style="font-size: 0.85rem; color: #cbd5e1;">Sign in to your authorized account</p>
+            </div>
+
+            <div class="login-body">
+                <div id="login-error-alert" class="alert alert-danger hidden"></div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Institutional Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="e.g. staff.santos@scholarship.edu.ph" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required value="Password123!">
+                    </div>
+
+                    <button type="submit" id="submit-login-btn" class="btn btn-primary" style="width: 100%; padding: 0.65rem;">Sign In to Account</button>
+                </form>
+
+                <div style="margin-top: 1rem; text-align: center;">
+                    <a href="index.html" class="text-sm text-muted">← Back to System Overview</a>
+                </div>
+            </div>
+
+            <!-- Synthetic Test Accounts Quick Switcher for Fast Evaluation -->
+            <div class="test-accounts-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <strong style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Synthetic Test Accounts</strong>
+                    <button id="reset-db-btn" class="btn btn-outline btn-xs" title="Reset all records to initial synthetic seed state">↺ Reset Seed Data</button>
+                </div>
+                
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Click any account below for instant evaluation session:
+                </div>
+
+                <!-- Staff Account -->
+                <button type="button" class="quick-user-btn" data-id="00000000-0000-0000-0000-000000000001">
+                    <div>
+                        <strong>Director Maria Santos</strong> (Staff)
+                        <div class="text-muted" style="font-size: 0.7rem;">staff.santos@scholarship.edu.ph</div>
+                    </div>
+                    <span class="badge badge-info">Staff</span>
+                </button>
+
+                <!-- Scholar Accounts (A01 - A06) -->
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000001">
+                    <div>
+                        <strong>Juan Dela Cruz</strong> (A01 - Merit)
+                        <div class="text-muted" style="font-size: 0.7rem;">juan.a01@student.edu.ph &bull; Boundary Passed</div>
+                    </div>
+                    <span class="badge badge-success">A01</span>
+                </button>
+
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000002">
+                    <div>
+                        <strong>Maria Clara</strong> (A02 - Merit)
+                        <div class="text-muted" style="font-size: 0.7rem;">clara.a02@student.edu.ph &bull; GWA 1.76</div>
+                    </div>
+                    <span class="badge badge-warning">A02</span>
+                </button>
+
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000003">
+                    <div>
+                        <strong>Antonio Luna</strong> (A03 - Community)
+                        <div class="text-muted" style="font-size: 0.7rem;">antonio.a03@student.edu.ph &bull; 1 Dropped (Allowed)</div>
+                    </div>
+                    <span class="badge badge-success">A03</span>
+                </button>
+
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000004">
+                    <div>
+                        <strong>Gabriela Silang</strong> (A04 - Community)
+                        <div class="text-muted" style="font-size: 0.7rem;">gabriela.a04@student.edu.ph &bull; 14 Units, 1 INC</div>
+                    </div>
+                    <span class="badge badge-warning">A04</span>
+                </button>
+
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000005">
+                    <div>
+                        <strong>Jose Rizal</strong> (A05 - Merit)
+                        <div class="text-muted" style="font-size: 0.7rem;">jose.a05@student.edu.ph &bull; 1 Failed, 1 min Late</div>
+                    </div>
+                    <span class="badge badge-danger">A05</span>
+                </button>
+
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000006">
+                    <div>
+                        <strong>Melchora Aquino</strong> (A06 - Community)
+                        <div class="text-muted" style="font-size: 0.7rem;">melchora.a06@student.edu.ph &bull; Pending Verification</div>
+                    </div>
+                    <span class="badge badge-secondary">A06</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const errorAlert = document.getElementById('login-error-alert');
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorAlert.classList.add('hidden');
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                const result = await window.Auth.login(email, password);
+                if (!result.success) {
+                    errorAlert.innerText = result.error;
+                    errorAlert.classList.remove('hidden');
+                } else {
+                    redirectToDashboard(result.user);
+                }
+            });
+
+            // Quick login buttons
+            document.querySelectorAll('.quick-user-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = btn.getAttribute('data-id');
+                    const res = await window.Auth.quickLogin(id);
+                    if (res.success) {
+                        redirectToDashboard(res.profile);
+                    } else {
+                        alert(res.error);
+                    }
+                });
+            });
+
+            // Reset database seed button
+            const resetBtn = document.getElementById('reset-db-btn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    if (confirm("Reset local database to initial synthetic seed scenarios?")) {
+                        window.dataClient.localEngine.resetToSeed();
+                        alert("Database reset to synthetic seed data successfully!");
+                        window.location.reload();
+                    }
+                });
+            }
+
+            function redirectToDashboard(user) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect');
+
+                if (redirect) {
+                    window.location.href = decodeURIComponent(redirect);
+                    return;
+                }
+
+                if (user.role === 'staff') {
+                    window.location.href = 'staff-dashboard.html';
+                } else {
+                    window.location.href = 'scholar-dashboard.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

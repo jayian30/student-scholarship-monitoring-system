@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Semester Grades - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="scholar-layout">
+    <nav class="top-navbar">
+        <a href="scholar-dashboard.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span class="brand-title">SSMAS | Scholar Portal</span>
+        </a>
+        <div class="nav-links">
+            <a href="scholar-dashboard.html" class="nav-link">My Dashboard</a>
+            <a href="submit-grades.html" class="nav-link active">Submit Grades</a>
+            <div id="system-mode-indicator"></div>
+            <div id="user-profile-badge"></div>
+        </div>
+    </nav>
+
+    <main class="main-content" style="max-width: 900px;">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Submit Semester Academic Summary</h1>
+                <p class="page-subtitle">Report your official semester academic performance and attach official grade documents.</p>
+            </div>
+            <div>
+                <a href="scholar-dashboard.html" class="btn btn-outline">&larr; Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div id="submission-program-banner" class="card mb-4" style="background: #eff6ff; border-color: #bfdbfe;">
+            <!-- Loaded dynamically via submissions.js -->
+        </div>
+
+        <div id="form-error-alert" class="alert alert-danger hidden"></div>
+        <div id="form-success-alert" class="alert alert-success hidden"></div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Semester Academic Performance Form</h3>
+            </div>
+            <div class="card-body">
+                <form id="grade-submission-form">
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label for="academic-year">Academic Year <span style="color:red;">*</span></label>
+                            <input type="text" id="academic-year" class="form-control" value="2026-2027" required placeholder="YYYY-YYYY">
+                            <small class="text-muted">e.g. 2026-2027</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="semester">Semester <span style="color:red;">*</span></label>
+                            <select id="semester" class="form-control" required>
+                                <option value="Semester 1" selected>Semester 1</option>
+                                <option value="Semester 2">Semester 2</option>
+                                <option value="Summer">Summer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label for="gwa">General Weighted Average (GWA) <span style="color:red;">*</span></label>
+                            <input type="number" id="gwa" class="form-control" step="0.01" min="1.00" max="5.00" placeholder="1.00 to 5.00" required>
+                            <small class="text-muted">Standard scale: 1.00 is highest, 5.00 is failing</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="enrolled-units">Total Enrolled Units <span style="color:red;">*</span></label>
+                            <input type="number" id="enrolled-units" class="form-control" min="1" max="36" placeholder="e.g. 18" required>
+                            <small class="text-muted">Total registered academic units</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label for="failed-subjects">Failed Subjects (5.00) <span style="color:red;">*</span></label>
+                            <input type="number" id="failed-subjects" class="form-control" min="0" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="incomplete-subjects">Incomplete Grades (INC) <span style="color:red;">*</span></label>
+                            <input type="number" id="incomplete-subjects" class="form-control" min="0" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dropped-subjects">Dropped Subjects (DRP) <span style="color:red;">*</span></label>
+                            <input type="number" id="dropped-subjects" class="form-control" min="0" value="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="evidence-reference">Supporting Grade-Document Reference <span style="color:red;">*</span></label>
+                        <input type="text" id="evidence-reference" class="form-control" placeholder="e.g. DOC-REG-2026-A01-OFFICIAL_GRADE_TRANSCRIPT.pdf or Registrar Portal Verification Link" required>
+                        <small class="text-muted">Provide the official document tracking code, PDF reference, or verified registrar transcript identifier.</small>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                        <a href="scholar-dashboard.html" class="btn btn-outline">Cancel</a>
+                        <button type="submit" id="submit-btn" class="btn btn-primary">Submit Academic Summary</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script src="js/scholar.js"></script>
+    <script src="js/submissions.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.Submissions.initSubmissionForm();
+        });
+    </script>
+</body>
+</html>

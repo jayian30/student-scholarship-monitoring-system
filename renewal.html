@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renewal Decisions - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Staff Sidebar -->
+        <aside class="staff-sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">🏛️</span>
+                <div>
+                    <strong style="font-size: 0.95rem; display: block;">Scholarship Office</strong>
+                    <span style="font-size: 0.7rem; color: #94a3b8;">Staff Control Portal</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Core Modules</span>
+                <a href="staff-dashboard.html" class="sidebar-link">📊 Staff Dashboard</a>
+                <a href="scholars.html" class="sidebar-link">👥 Scholar Management</a>
+                <a href="verification.html" class="sidebar-link">📑 Verification Queue</a>
+                <a href="compliance.html" class="sidebar-link">⚖️ Compliance Engine</a>
+                <a href="renewal.html" class="sidebar-link active">✍️ Renewal Decisions</a>
+
+                <span class="sidebar-section-title" style="margin-top: 1rem;">System & Policies</span>
+                <a href="policies.html" class="sidebar-link">📋 Policy Thresholds</a>
+                <a href="audit-history.html" class="sidebar-link">📜 Audit History Log</a>
+                <a href="tests/runner.html" class="sidebar-link">🧪 Test Suite (TC01–TC10)</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-outline btn-sm" style="width: 100%; color: #cbd5e1; border-color: rgba(255,255,255,0.2);" onclick="window.Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Scholarship Renewal Decision Station</h1>
+                    <p class="page-subtitle">Record explicit staff-controlled renewal decisions (Approved or Held) based on verified evidence and academic compliance.</p>
+                </div>
+                <div class="header-actions">
+                    <div id="user-profile-badge"></div>
+                </div>
+            </div>
+
+            <!-- Business Rule Alert -->
+            <div class="alert alert-warning">
+                <strong>Business Rule BR06 Enforcement:</strong> Approval strictly requires <strong>Verified</strong> evidence AND a completed <strong>Compliant</strong> evaluation. A submission with deficiencies or unverified evidence cannot be approved. Placing a renewal on <strong>Hold</strong> strictly requires explanatory staff notes.
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Submissions Queue for Renewal Decision</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Scholar Details</th>
+                                    <th>Program</th>
+                                    <th>Period</th>
+                                    <th>Verification</th>
+                                    <th>Compliance</th>
+                                    <th>Current Renewal Status</th>
+                                    <th>Staff Renewal Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="renewal-table-body">
+                                <tr>
+                                    <td colspan="8" class="text-center py-4">Loading renewal queue...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hold Renewal Modal -->
+    <div id="hold-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Place Scholarship Renewal on HOLD</h3>
+                <button id="modal-hold-close" class="btn btn-outline btn-xs">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Placing renewal on hold for scholar: <strong id="modal-hold-scholar">Scholar Name</strong></p>
+                <div class="alert alert-danger mt-2 mb-3">
+                    <strong>Mandatory Requirement:</strong> Explanatory staff notes are required when placing a renewal on hold. State the deficiencies, counseling requirements, or appeal guidelines.
+                </div>
+                <form id="modal-hold-form">
+                    <input type="hidden" id="modal-hold-id">
+                    <div class="form-group">
+                        <label for="modal-hold-notes">Explanatory Staff Notes / Deficiency Remarks <span style="color:red;">*</span></label>
+                        <textarea id="modal-hold-notes" class="form-control" rows="4" placeholder="Detail reasons for placing renewal on hold..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="modal-hold-cancel" class="btn btn-outline">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Confirm Hold Decision</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script src="js/scholar.js"></script>
+    <script src="js/renewal.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.Renewal.init();
+        });
+    </script>
+</body>
+</html>

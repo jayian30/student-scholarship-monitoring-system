@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholar Management - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Staff Sidebar -->
+        <aside class="staff-sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">🏛️</span>
+                <div>
+                    <strong style="font-size: 0.95rem; display: block;">Scholarship Office</strong>
+                    <span style="font-size: 0.7rem; color: #94a3b8;">Staff Control Portal</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Core Modules</span>
+                <a href="staff-dashboard.html" class="sidebar-link">📊 Staff Dashboard</a>
+                <a href="scholars.html" class="sidebar-link active">👥 Scholar Management</a>
+                <a href="verification.html" class="sidebar-link">📑 Verification Queue</a>
+                <a href="compliance.html" class="sidebar-link">⚖️ Compliance Engine</a>
+                <a href="renewal.html" class="sidebar-link">✍️ Renewal Decisions</a>
+
+                <span class="sidebar-section-title" style="margin-top: 1rem;">System & Policies</span>
+                <a href="policies.html" class="sidebar-link">📋 Policy Thresholds</a>
+                <a href="audit-history.html" class="sidebar-link">📜 Audit History Log</a>
+                <a href="tests/runner.html" class="sidebar-link">🧪 Test Suite (TC01–TC10)</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn btn-outline btn-sm" style="width: 100%; color: #cbd5e1; border-color: rgba(255,255,255,0.2);" onclick="window.Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Scholar Directory & Program Assignment</h1>
+                    <p class="page-subtitle">Register and manage authorized synthetic scholar profiles, assign scholarship programs, and inspect student histories.</p>
+                </div>
+                <div class="header-actions">
+                    <div id="user-profile-badge"></div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Bar -->
+            <div class="filter-bar">
+                <div class="search-input-wrap">
+                    <input type="text" id="scholar-search" class="form-control" placeholder="Search by Student ID, Scholar Name, or Email...">
+                </div>
+                <div>
+                    <select id="scholar-program-filter" class="form-control">
+                        <option value="all">All Assigned Programs</option>
+                        <option value="Merit Scholar">Merit Scholar</option>
+                        <option value="Community Scholar">Community Scholar</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Registered Scholars</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email Address</th>
+                                    <th>Assigned Program</th>
+                                    <th>Assignment Status</th>
+                                    <th>Assigned At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scholars-table-body">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">Loading scholar directory...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Program Assignment Modal -->
+    <div id="assign-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Assign Scholarship Program</h3>
+                <button id="assign-modal-close" class="btn btn-outline btn-xs">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Change or assign scholarship program for <strong id="assign-scholar-name">Scholar</strong>.</p>
+                <form id="assign-program-form" class="mt-3">
+                    <input type="hidden" id="assign-scholar-id">
+                    <div class="form-group">
+                        <label for="assign-program-select">Scholarship Program</label>
+                        <select id="assign-program-select" class="form-control" required>
+                            <option value="00000000-0000-0000-0001-000000000001">Merit Scholar (Max GWA 1.75, Min Units 18)</option>
+                            <option value="00000000-0000-0000-0001-000000000002">Community Scholar (Max GWA 2.25, Min Units 15)</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="assign-modal-cancel" class="btn btn-outline">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Program Assignment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await window.AccessControl.guard(['staff']);
+            if (!user) return;
+
+            let scholarsList = [];
+            let programsList = [];
+            let assignmentsList = [];
+
+            async function loadScholars() {
+                const tbody = document.getElementById('scholars-table-body');
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Loading scholars...</td></tr>`;
+
+                const { data: profiles } = await window.dataClient.from('profiles').select('*').eq('role', 'scholar');
+                const { data: programs } = await window.dataClient.from('scholarship_programs').select('*');
+                const { data: assignments } = await window.dataClient.from('scholar_assignments').select('*');
+
+                scholarsList = profiles || [];
+                programsList = programs || [];
+                assignmentsList = assignments || [];
+
+                renderTable();
+            }
+
+            function renderTable() {
+                const tbody = document.getElementById('scholars-table-body');
+                const query = (document.getElementById('scholar-search').value || '').toLowerCase().trim();
+                const progFilter = document.getElementById('scholar-program-filter').value;
+
+                const progMap = new Map(programsList.map(p => [p.id, p]));
+                const assignMap = new Map(assignmentsList.map(a => [a.scholar_id, a]));
+
+                let filtered = scholarsList.filter(s => {
+                    const name = (s.full_name || '').toLowerCase();
+                    const id = (s.student_id || '').toLowerCase();
+                    const email = (s.email || '').toLowerCase();
+                    if (query && !name.includes(query) && !id.includes(query) && !email.includes(query)) return false;
+
+                    const assign = assignMap.get(s.id);
+                    const prog = assign ? progMap.get(assign.scholarship_program_id) : null;
+                    if (progFilter !== 'all' && (!prog || prog.program_name !== progFilter)) return false;
+
+                    return true;
+                });
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 empty-state">No scholars match the search criteria.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(s => {
+                    const assign = assignMap.get(s.id);
+                    const prog = assign ? progMap.get(assign.scholarship_program_id) : null;
+
+                    return `
+                        <tr>
+                            <td><strong>${s.student_id || 'N/A'}</strong></td>
+                            <td>${s.full_name}</td>
+                            <td><span class="text-muted text-xs">${s.email}</span></td>
+                            <td>${prog ? `<span class="program-badge">${prog.program_name}</span>` : '<span class="text-muted">Unassigned</span>'}</td>
+                            <td><span class="badge badge-${assign && assign.assignment_status === 'Active' ? 'success' : 'secondary'}">${assign ? assign.assignment_status : 'None'}</span></td>
+                            <td><span class="text-xs">${assign ? window.formatManilaDate(assign.assigned_at) : 'N/A'}</span></td>
+                            <td>
+                                <button class="btn btn-outline btn-xs assign-btn" data-id="${s.id}" data-name="${s.full_name}" data-prog="${assign ? assign.scholarship_program_id : ''}">Assign Program</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                document.querySelectorAll('.assign-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const sId = btn.getAttribute('data-id');
+                        const sName = btn.getAttribute('data-name');
+                        const curProg = btn.getAttribute('data-prog');
+
+                        document.getElementById('assign-scholar-id').value = sId;
+                        document.getElementById('assign-scholar-name').innerText = sName;
+                        if (curProg) document.getElementById('assign-program-select').value = curProg;
+                        document.getElementById('assign-modal').classList.remove('hidden');
+                    });
+                });
+            }
+
+            document.getElementById('scholar-search').addEventListener('input', renderTable);
+            document.getElementById('scholar-program-filter').addEventListener('change', renderTable);
+
+            // Modal Handlers
+            const modal = document.getElementById('assign-modal');
+            document.getElementById('assign-modal-close').addEventListener('click', () => modal.classList.add('hidden'));
+            document.getElementById('assign-modal-cancel').addEventListener('click', () => modal.classList.add('hidden'));
+
+            document.getElementById('assign-program-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const scholarId = document.getElementById('assign-scholar-id').value;
+                const progId = document.getElementById('assign-program-select').value;
+
+                // Update assignment in db
+                const db = window.dataClient.localEngine.getDB();
+                let assign = db.scholar_assignments.find(a => a.scholar_id === scholarId);
+                if (assign) {
+                    assign.scholarship_program_id = progId;
+                    assign.assigned_by = user.id;
+                    assign.assigned_at = new Date().toISOString();
+                } else {
+                    db.scholar_assignments.push({
+                        id: 'gen-assign-' + Date.now(),
+                        scholar_id: scholarId,
+                        scholarship_program_id: progId,
+                        assigned_by: user.id,
+                        assigned_at: new Date().toISOString(),
+                        assignment_status: 'Active'
+                    });
+                }
+                window.dataClient.localEngine.saveDB(db);
+
+                alert("Scholarship program assignment successfully updated!");
+                modal.classList.add('hidden');
+                await loadScholars();
+            });
+
+            await loadScholars();
+        });
+    </script>
+</body>
+</html>

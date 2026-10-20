@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Review & Details - Student Scholarship Monitoring and Academic Compliance System</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="scholar-layout">
+    <nav class="top-navbar">
+        <a href="index.html" class="brand">
+            <span class="brand-icon">🎓</span>
+            <span class="brand-title">SSMAS | Record Details</span>
+        </a>
+        <div class="nav-links">
+            <a href="javascript:history.back()" class="nav-link">&larr; Return to Previous Page</a>
+            <div id="system-mode-indicator"></div>
+            <div id="user-profile-badge"></div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Submission Details & Compliance Audit</h1>
+                <p class="page-subtitle">Examine semester grade report, evidence verification logs, academic policy results, and renewal status.</p>
+            </div>
+            <div>
+                <a href="javascript:window.print()" class="btn btn-outline btn-sm">🖨️ Print / Export Record</a>
+            </div>
+        </div>
+
+        <div id="details-content">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <p class="text-muted">Loading submission details and verification history...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Core Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/access-control.js"></script>
+    <script src="js/scholar.js"></script>
+    <script src="js/submissions.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.Submissions.initSubmissionDetails();
+        });
+    </script>
+</body>
+</html>
