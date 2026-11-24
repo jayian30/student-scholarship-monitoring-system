@@ -73,7 +73,21 @@ const Auth = {
     /**
      * Quick-switch account for testing & demonstration
      */
-    async quickLogin(userId) {
+    async quickLogin(userId, email) {
+        // Live Supabase: real sign-in with the shared demo password so RLS
+        // sees a genuine auth.uid() (see supabase/demo-auth-users.sql)
+        if (window.dataClient.useRemote) {
+            if (!email) return { success: false, error: "Demo account email is missing." };
+            const result = await this.login(email, CONFIG.DEMO_PASSWORD);
+            if (!result.success) {
+                return {
+                    success: false,
+                    error: result.error + "\n\nKung 'Invalid login credentials', patakbuhin ang supabase/demo-auth-users.sql sa Supabase SQL Editor."
+                };
+            }
+            return { success: true, profile: result.user };
+        }
+
         const profile = await this.fetchProfile(userId);
         if (!profile) return { success: false, error: "Profile not found." };
 

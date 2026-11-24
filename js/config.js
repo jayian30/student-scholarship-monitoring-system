@@ -13,6 +13,9 @@ const CONFIG = {
     DEFAULT_SUPABASE_URL: window.localStorage.getItem('SCHOLARSHIP_SUPABASE_URL') || "https://hvrnijdbwyumdsrenbtn.supabase.co",
     DEFAULT_SUPABASE_ANON_KEY: window.localStorage.getItem('SCHOLARSHIP_SUPABASE_ANON_KEY') || "sb_publishable_5XEXQdDcr84BnN5IEcQXHg_1tMcy8Px",
 
+    // Shared password of the seeded demo accounts (created by supabase/demo-auth-users.sql)
+    DEMO_PASSWORD: "Password123!",
+
     // System Date Bounds & Fallbacks
     CURRENT_ACADEMIC_YEAR: "2026-2027",
     CURRENT_SEMESTER: "Semester 1",
