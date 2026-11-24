@@ -53,7 +53,7 @@
                 <strong>Database-Backed Compliance Architecture:</strong> All evaluation functions query these persisted records from the <code>scholarship_programs</code> table. Policy thresholds are never hardcoded in application logic.
             </div>
 
-            <div id="programs-container" class="policy-programs-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+            <div id="programs-container" class="program-cards-grid">
                 <div class="card"><div class="card-body text-center py-5">Loading persisted policy records...</div></div>
             </div>
         </main>
@@ -65,6 +65,7 @@
     <script src="js/supabase-client.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/access-control.js"></script>
+    <script src="js/program-cards.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const user = await window.AccessControl.guard(['staff']);
@@ -82,58 +83,7 @@
                 return;
             }
 
-            container.innerHTML = programs.map(p => `
-                <div class="card">
-                    <div class="card-header">
-                        <h3>${p.program_name}</h3>
-                        <span class="program-badge">${p.program_name.split(' ')[0]}</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="deadline-pill mb-3">
-                            <strong>Official Manila Deadline:</strong><br>
-                            ${window.formatManilaDate(p.submission_deadline)}
-                        </div>
-
-                        <div class="policy-grid" style="grid-template-columns: 1fr 1fr;">
-                            <div class="policy-item">
-                                <span class="policy-label">Max Permitted GWA</span>
-                                <span class="policy-val">${p.max_gwa.toFixed(2)}</span>
-                                <small class="text-muted text-xs">Scale: 1.00 - 5.00</small>
-                            </div>
-                            <div class="policy-item">
-                                <span class="policy-label">Min Enrolled Units</span>
-                                <span class="policy-val">${p.min_enrolled_units} units</span>
-                                <small class="text-muted text-xs">Regular full-time load</small>
-                            </div>
-                            <div class="policy-item">
-                                <span class="policy-label">Max Failed Subjects</span>
-                                <span class="policy-val">${p.max_failed_subjects}</span>
-                                <small class="text-muted text-xs">Zero tolerance</small>
-                            </div>
-                            <div class="policy-item">
-                                <span class="policy-label">Max Incomplete Grades</span>
-                                <span class="policy-val">${p.max_incomplete_subjects}</span>
-                                <small class="text-muted text-xs">Zero tolerance</small>
-                            </div>
-                            <div class="policy-item">
-                                <span class="policy-label">Max Dropped Subjects</span>
-                                <span class="policy-val">${p.max_dropped_subjects}</span>
-                                <small class="text-muted text-xs">${p.max_dropped_subjects > 0 ? 'Permitted allowance' : 'Zero tolerance'}</small>
-                            </div>
-                            <div class="policy-item">
-                                <span class="policy-label">Required Evidence</span>
-                                <span class="policy-val text-sm">${p.evidence_required}</span>
-                                <small class="text-muted text-xs">Registrar verified</small>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-3" style="border-top: 1px solid var(--border-color); font-size: 0.75rem; color: var(--text-muted);">
-                            <span>Program Record ID: <code>${p.id}</code></span><br>
-                            <span>Last Updated: ${window.formatManilaDate(p.updated_at)}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+            container.innerHTML = programs.map(p => window.renderProgramCard(p, { showMeta: true })).join('');
         });
     </script>
 </body>

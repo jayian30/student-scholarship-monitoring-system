@@ -31,45 +31,8 @@
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-            <!-- Merit Scholar Program Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h3>Merit Scholar Program</h3>
-                    <span class="program-badge">Merit</span>
-                </div>
-                <div class="card-body">
-                    <p class="text-sm text-muted mb-3">Designed for top-tier academic achievers maintaining strict excellence standards without subject failures or dropped courses.</p>
-                    <ul style="list-style: none; font-size: 0.85rem; line-height: 1.8;">
-                        <li><strong>Max Permitted GWA:</strong> 1.75 (Lower is better)</li>
-                        <li><strong>Min Enrolled Units:</strong> 18 units</li>
-                        <li><strong>Max Failed Subjects:</strong> 0</li>
-                        <li><strong>Max Incomplete Grades:</strong> 0</li>
-                        <li><strong>Max Dropped Subjects:</strong> 0</li>
-                        <li><strong>Deadline:</strong> Oct 30, 2026, 5:00 PM Manila Time</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Community Scholar Program Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h3>Community Scholar Program</h3>
-                    <span class="program-badge">Community</span>
-                </div>
-                <div class="card-body">
-                    <p class="text-sm text-muted mb-3">Designed for scholars engaged in civic and community service with flexible unit load and one permitted dropped subject.</p>
-                    <ul style="list-style: none; font-size: 0.85rem; line-height: 1.8;">
-                        <li><strong>Max Permitted GWA:</strong> 2.25 (Lower is better)</li>
-                        <li><strong>Min Enrolled Units:</strong> 15 units</li>
-                        <li><strong>Max Failed Subjects:</strong> 0</li>
-                        <li><strong>Max Incomplete Grades:</strong> 0</li>
-                        <li><strong>Max Dropped Subjects:</strong> 1</li>
-                        <li><strong>Deadline:</strong> Oct 30, 2026, 5:00 PM Manila Time</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <!-- Scholarship Program Cards (rendered by js/program-cards.js) -->
+        <div id="program-cards" class="program-cards-grid" style="margin-top: 2rem;"></div>
 
         <!-- Role Access Cards -->
         <div class="card mt-4">
@@ -96,5 +59,13 @@
     <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border-color); margin-top: 3rem;">
         Student Scholarship Monitoring and Academic Compliance System &bull; ITPC111 Systems Analysis and Design &bull; Academic Year 2026–2027
     </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/program-cards.js"></script>
+    <script>
+        document.getElementById('program-cards').innerHTML = Object.values(CONFIG.PROGRAMS)
+            .map(p => window.renderProgramCard({ program_name: p.name, ...p }))
+            .join('');
+    </script>
 </body>
 </html>
