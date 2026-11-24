@@ -101,7 +101,7 @@
                 </div>
 
                 <!-- Staff Account -->
-                <button type="button" class="quick-user-btn" data-id="00000000-0000-0000-0000-000000000001">
+                <button type="button" class="quick-user-btn" data-id="00000000-0000-0000-0000-000000000001" data-email="staff.santos@scholarship.edu.ph">
                     <div>
                         <strong>Director Maria Santos</strong> (Staff)
                         <div class="text-muted" style="font-size: 0.7rem;">staff.santos@scholarship.edu.ph</div>
@@ -110,7 +110,7 @@
                 </button>
 
                 <!-- Scholar Accounts (A01 - A06) -->
-                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000001">
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000001" data-email="juan.a01@student.edu.ph">
                     <div>
                         <strong>Juan Dela Cruz</strong> (A01 - Merit)
                         <div class="text-muted" style="font-size: 0.7rem;">juan.a01@student.edu.ph &bull; Boundary Passed</div>
@@ -118,7 +118,7 @@
                     <span class="badge badge-success">A01</span>
                 </button>
 
-                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000002">
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000002" data-email="clara.a02@student.edu.ph">
                     <div>
                         <strong>Maria Clara</strong> (A02 - Merit)
                         <div class="text-muted" style="font-size: 0.7rem;">clara.a02@student.edu.ph &bull; GWA 1.76</div>
@@ -126,7 +126,7 @@
                     <span class="badge badge-warning">A02</span>
                 </button>
 
-                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000003">
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000003" data-email="antonio.a03@student.edu.ph">
                     <div>
                         <strong>Antonio Luna</strong> (A03 - Community)
                         <div class="text-muted" style="font-size: 0.7rem;">antonio.a03@student.edu.ph &bull; 1 Dropped (Allowed)</div>
@@ -134,7 +134,7 @@
                     <span class="badge badge-success">A03</span>
                 </button>
 
-                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000004">
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000004" data-email="gabriela.a04@student.edu.ph">
                     <div>
                         <strong>Gabriela Silang</strong> (A04 - Community)
                         <div class="text-muted" style="font-size: 0.7rem;">gabriela.a04@student.edu.ph &bull; 14 Units, 1 INC</div>
@@ -142,7 +142,7 @@
                     <span class="badge badge-warning">A04</span>
                 </button>
 
-                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000005">
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000005" data-email="jose.a05@student.edu.ph">
                     <div>
                         <strong>Jose Rizal</strong> (A05 - Merit)
                         <div class="text-muted" style="font-size: 0.7rem;">jose.a05@student.edu.ph &bull; 1 Failed, 1 min Late</div>
@@ -150,7 +150,7 @@
                     <span class="badge badge-danger">A05</span>
                 </button>
 
-                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000006">
+                <button type="button" class="quick-user-btn" data-id="10000000-0000-0000-0000-000000000006" data-email="melchora.a06@student.edu.ph">
                     <div>
                         <strong>Melchora Aquino</strong> (A06 - Community)
                         <div class="text-muted" style="font-size: 0.7rem;">melchora.a06@student.edu.ph &bull; Pending Verification</div>
@@ -191,7 +191,8 @@
             document.querySelectorAll('.quick-user-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const id = btn.getAttribute('data-id');
-                    const res = await window.Auth.quickLogin(id);
+                    const email = btn.getAttribute('data-email');
+                    const res = await window.Auth.quickLogin(id, email);
                     if (res.success) {
                         redirectToDashboard(res.profile);
                     } else {
