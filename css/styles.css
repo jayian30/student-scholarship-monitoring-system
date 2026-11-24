@@ -1148,3 +1148,138 @@ body {
     color: var(--text-muted);
     word-break: break-all;
 }
+
+/* --------------------------------------------------------------------------
+   Scholar Dashboard: assigned program card with requirement checks
+   -------------------------------------------------------------------------- */
+.scholar-program {
+    margin-bottom: 1.5rem;
+}
+
+.scholar-program:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+}
+
+.scholar-program__header {
+    flex-wrap: wrap;
+    padding: 1.5rem;
+}
+
+.scholar-program__title {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.scholar-program__desc {
+    display: block;
+    font-size: 0.82rem;
+    opacity: 0.9;
+    margin-top: 0.2rem;
+}
+
+.scholar-program__deadline {
+    flex: 0 1 auto;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.85rem;
+}
+
+.scholar-program__countdown {
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.req-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 0.75rem;
+}
+
+.req-tile {
+    border: 1px solid var(--border-color);
+    border-top: 3px solid var(--pc-accent);
+    border-radius: var(--radius-md);
+    background: var(--pc-soft);
+    padding: 0.8rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.req-tile__label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--pc-accent);
+}
+
+.req-tile__value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.req-tile__yours {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+}
+
+.req-tile__mark {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: #ffffff;
+}
+
+.req-tile--pass .req-tile__yours { color: #065f46; }
+.req-tile--pass .req-tile__mark { background: var(--success); }
+
+.req-tile--fail {
+    background: #fff7f7;
+    border-color: var(--danger-border);
+    border-top-color: var(--danger);
+}
+.req-tile--fail .req-tile__yours { color: #991b1b; }
+.req-tile--fail .req-tile__mark { background: var(--danger); }
+
+.req-summary {
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    font-size: 0.83rem;
+    border: 1px solid;
+}
+
+.req-summary--pass {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: #065f46;
+}
+
+.req-summary--fail {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: #991b1b;
+}
+
+.req-summary--neutral {
+    background: #f1f5f9;
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
