@@ -935,3 +935,216 @@ body {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* --------------------------------------------------------------------------
+   Scholarship Program Cards (Merit / Community)
+   -------------------------------------------------------------------------- */
+.program-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 1.5rem;
+}
+
+.program-card {
+    --pc-from: #1e3a8a;
+    --pc-to: #2563eb;
+    --pc-accent: #1e3a8a;
+    --pc-soft: #eff6ff;
+    --pc-border: #bfdbfe;
+
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.program-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.program-card--merit {
+    --pc-from: #78350f;
+    --pc-to: #b45309;
+    --pc-accent: #92400e;
+    --pc-soft: #fffbeb;
+    --pc-border: #fde68a;
+}
+
+.program-card--community {
+    --pc-from: #064e3b;
+    --pc-to: #047857;
+    --pc-accent: #065f46;
+    --pc-soft: #ecfdf5;
+    --pc-border: #a7f3d0;
+}
+
+.program-card__header {
+    background: linear-gradient(135deg, var(--pc-from) 0%, var(--pc-to) 100%);
+    color: #ffffff;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.program-card__icon {
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.program-card__eyebrow {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.program-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #ffffff;
+}
+
+.program-card__body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    flex: 1;
+}
+
+.program-card__desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.program-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.program-stat {
+    background: var(--pc-soft);
+    border: 1px solid var(--pc-border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.program-stat__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--pc-accent);
+}
+
+.program-stat__value {
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.program-stat__hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.program-rules {
+    list-style: none;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+.program-rules li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.85rem;
+}
+
+.program-rules li + li {
+    border-top: 1px solid var(--border-color);
+}
+
+.program-rules__name {
+    color: var(--text-secondary);
+}
+
+.rule-chip {
+    flex-shrink: 1;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid;
+    text-align: right;
+}
+
+.rule-chip--strict {
+    color: #991b1b;
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+}
+
+.rule-chip--allowed {
+    color: #065f46;
+    background: var(--success-bg);
+    border-color: var(--success-border);
+}
+
+.rule-chip--info {
+    color: var(--text-secondary);
+    background: #f1f5f9;
+    border-color: var(--border-color);
+}
+
+.program-card__deadline {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.82rem;
+    color: #991b1b;
+}
+
+.program-card__deadline strong {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.program-card__meta {
+    margin-top: auto;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--border-color);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    word-break: break-all;
+}
