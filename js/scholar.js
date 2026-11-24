@@ -8,11 +8,11 @@ const ScholarPortal = {
         const user = await window.AccessControl.guard(['scholar']);
         if (!user) return;
 
-        await this.loadScholarProfileAndAssignment(user);
-        await this.loadSubmissions(user);
+        const submissions = await this.loadSubmissions(user);
+        await this.loadScholarProfileAndAssignment(user, submissions[0] || null);
     },
 
-    async loadScholarProfileAndAssignment(user) {
+    async loadScholarProfileAndAssignment(user, latestSubmission) {
         // Load assigned scholarship program
         const { data: assignments, error } = await window.dataClient
             .from('scholar_assignments')
@@ -41,50 +41,88 @@ const ScholarPortal = {
 
         if (program) {
             window.currentScholarProgram = program;
-            programContainer.innerHTML = `
-                <div class="program-header">
-                    <div class="program-title-area">
-                        <span class="program-badge">${program.program_name}</span>
-                        <h3>Academic Requirements & Compliance Rules</h3>
-                    </div>
-                    <div class="deadline-pill">
-                        <span class="deadline-label">AY 2026-2027 Sem 1 Deadline:</span>
-                        <span class="deadline-val">${window.formatManilaDate(program.submission_deadline)}</span>
-                    </div>
-                </div>
-                <div class="policy-grid">
-                    <div class="policy-item">
-                        <span class="policy-label">Max Permitted GWA</span>
-                        <span class="policy-val">${program.max_gwa.toFixed(2)}</span>
-                    </div>
-                    <div class="policy-item">
-                        <span class="policy-label">Min Enrolled Units</span>
-                        <span class="policy-val">${program.min_enrolled_units} units</span>
-                    </div>
-                    <div class="policy-item">
-                        <span class="policy-label">Max Failed Subjects</span>
-                        <span class="policy-val">${program.max_failed_subjects}</span>
-                    </div>
-                    <div class="policy-item">
-                        <span class="policy-label">Max Incomplete Grades</span>
-                        <span class="policy-val">${program.max_incomplete_subjects}</span>
-                    </div>
-                    <div class="policy-item">
-                        <span class="policy-label">Max Dropped Subjects</span>
-                        <span class="policy-val">${program.max_dropped_subjects}</span>
-                    </div>
-                    <div class="policy-item">
-                        <span class="policy-label">Required Evidence</span>
-                        <span class="policy-val">${program.evidence_required}</span>
-                    </div>
-                </div>
-            `;
+            const variant = window.ProgramTheme.variantOf(program.program_name);
+            programContainer.className = `program-card program-card--${variant} scholar-program`;
+            programContainer.removeAttribute('style');
+            programContainer.innerHTML = this.renderProgramDashboard(program, latestSubmission);
         }
+    },
+
+    /**
+     * Themed program card with each requirement checked against the
+     * scholar's latest submission (preview only; staff evaluation is official)
+     */
+    renderProgramDashboard(program, sub) {
+        const { variantOf, styles, escapeHtml } = window.ProgramTheme;
+        const style = styles[variantOf(program.program_name)];
+
+        // Deadline countdown
+        const deadlineMs = new Date(program.submission_deadline).getTime();
+        const msLeft = deadlineMs - Date.now();
+        const daysLeft = Math.ceil(msLeft / 86400000);
+        const countdown = msLeft <= 0
+            ? 'Submission closed'
+            : daysLeft <= 1 ? 'Closes within 24 hours' : `${daysLeft} days left`;
+
+        // Requirement rules: [label, requirement text, scholar value, passes?]
+        const limitText = n => Number(n) === 0 ? 'None allowed' : `Max ${n}`;
+        const rules = [
+            ['Max GWA', Number(program.max_gwa).toFixed(2), sub && Number(sub.gwa).toFixed(2), sub && Number(sub.gwa) <= Number(program.max_gwa)],
+            ['Min Units', `${program.min_enrolled_units} units`, sub && `${sub.enrolled_units} units`, sub && sub.enrolled_units >= program.min_enrolled_units],
+            ['Failed Subjects', limitText(program.max_failed_subjects), sub && sub.failed_subjects, sub && sub.failed_subjects <= program.max_failed_subjects],
+            ['Incomplete (INC)', limitText(program.max_incomplete_subjects), sub && sub.incomplete_subjects, sub && sub.incomplete_subjects <= program.max_incomplete_subjects],
+            ['Dropped Subjects', limitText(program.max_dropped_subjects), sub && sub.dropped_subjects, sub && sub.dropped_subjects <= program.max_dropped_subjects],
+            ['Evidence', escapeHtml(program.evidence_required), sub && (sub.evidence_reference ? 'Submitted' : 'Missing'), sub && !!sub.evidence_reference]
+        ];
+
+        const tiles = rules.map(([label, requirement, yours, pass]) => {
+            const state = !sub ? 'neutral' : pass ? 'pass' : 'fail';
+            const yoursRow = !sub ? '' : `
+                <div class="req-tile__yours">
+                    <span>Yours: <strong>${escapeHtml(yours)}</strong></span>
+                    <span class="req-tile__mark">${pass ? '✓' : '✗'}</span>
+                </div>`;
+            return `
+                <div class="req-tile req-tile--${state}">
+                    <span class="req-tile__label">${label}</span>
+                    <span class="req-tile__value">${requirement}</span>
+                    ${yoursRow}
+                </div>`;
+        }).join('');
+
+        const failed = sub ? rules.filter(r => !r[3]).length : 0;
+        const summary = !sub
+            ? `<div class="req-summary req-summary--neutral">No submission yet. Submit your semester academic summary to see how you meet each requirement.</div>`
+            : `<div class="req-summary req-summary--${failed ? 'fail' : 'pass'}">
+                    <strong>${failed ? `${failed} requirement${failed > 1 ? 's' : ''} not met` : 'All requirements met'}</strong>
+                    based on your latest submission (${escapeHtml(sub.academic_year)}, ${escapeHtml(sub.semester)}).
+                    This is a preview only. The official result comes from the Scholarship Office's compliance evaluation.
+               </div>`;
+
+        return `
+            <header class="program-card__header scholar-program__header">
+                <div class="program-card__icon" aria-hidden="true">${style.icon}</div>
+                <div class="scholar-program__title">
+                    <span class="program-card__eyebrow">Your Scholarship Program</span>
+                    <h3 class="program-card__title">${escapeHtml(program.program_name)}</h3>
+                    <span class="scholar-program__desc">${style.description}</span>
+                </div>
+                <div class="scholar-program__deadline">
+                    <span class="program-card__eyebrow">AY ${escapeHtml(CONFIG.CURRENT_ACADEMIC_YEAR)} ${escapeHtml(CONFIG.CURRENT_SEMESTER)} Deadline</span>
+                    <strong>${escapeHtml(window.formatManilaDate(program.submission_deadline))}</strong>
+                    <span class="scholar-program__countdown">⏰ ${countdown}</span>
+                </div>
+            </header>
+            <div class="program-card__body">
+                <div class="req-grid">${tiles}</div>
+                ${summary}
+            </div>
+        `;
     },
 
     async loadSubmissions(user) {
         const container = document.getElementById('submissions-table-body');
-        if (!container) return;
+        if (!container) return [];
 
         container.innerHTML = `<tr><td colspan="8" class="text-center py-4">Loading submissions...</td></tr>`;
 
@@ -103,7 +141,7 @@ const ScholarPortal = {
                     </td>
                 </tr>
             `;
-            return;
+            return [];
         }
 
         container.innerHTML = submissions.map(sub => {
@@ -134,6 +172,7 @@ const ScholarPortal = {
                 </tr>
             `;
         }).join('');
+        return submissions;
     },
 
     getVerificationBadge(status) {

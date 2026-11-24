@@ -97,4 +97,5 @@
     }
 
     window.renderProgramCard = renderProgramCard;
+    window.ProgramTheme = { variantOf, styles: PROGRAM_STYLES, escapeHtml };
 })();
